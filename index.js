@@ -1,9 +1,15 @@
 const canvas = document.getElementById("myCanvas");
 
 const FOOD_COLOR = "red";
-const SNAKE_COLOR = "green";
+const SNAKE_BODY_COLOR = "green";
+const SNAKE_HEAD_COLOR = "blue";
 const BOARD_COLOR = "#181818";
 const STEP = 20;
+
+let snakeBody = [
+    [400, 400],
+    [400, 420],
+]
 let width = 20;
 let height = 20;
 x = 400;
@@ -12,28 +18,38 @@ y = 400;
 const ctx = canvas.getContext("2d");
 
 const generateRandom = () => {
-    let randomNum = Math.floor(Math.random() * 796)
-    if (randomNum % STEP == 0) {
-        return randomNum;
-    }
-    return generateRandom();
+    let randomNum = Math.floor(Math.random() * 781);
+    return randomNum % STEP === 0 ? randomNum : generateRandom();
 }
+
+let x_of_food = generateRandom();
+let y_of_food = generateRandom();
+
 
 const createRectangle = (X, Y, color) => {
     ctx.fillStyle = color;
     ctx.fillRect(X, Y, width, height);
 }
 
-const generateFood = (dx = null, dy = null) => {
-    if (dx && dy) {
-        createRectangle(dx, dy, FOOD_COLOR);
-    } else {
-        dx = generateRandom();
-        dy = generateRandom();
-        createRectangle(dx, dy, FOOD_COLOR);
+const createSnake = () => {
+    for (let i = 0; i < snakeBody.length; i++) {
+        const [dx, dy] = snakeBody[i];
+        const color = i === snakeBody.length - 1 ? SNAKE_HEAD_COLOR : SNAKE_BODY_COLOR;
+        createRectangle(dx, dy, color);
     }
-    return [dx, dy];
 }
+
+const eraseSnake = () => {
+    for (let i = 0; i < snakeBody.length; i++) {
+        const [dx, dy] = snakeBody[i];
+        createRectangle(dx, dy, BOARD_COLOR);
+    }
+}
+
+const generateFood = () => {
+    createRectangle(x_of_food, y_of_food, FOOD_COLOR);
+}
+
 
 const generateBoard = () => {
     for (let i = 0; i < 800; i += STEP) {
@@ -41,14 +57,9 @@ const generateBoard = () => {
             createRectangle(i, j, BOARD_COLOR);
         }
     }
-    createRectangle(x, y, SNAKE_COLOR);
+    createSnake();
+    generateFood();
 };
-
-
-generateBoard();
-
-[prev_x_of_food, prev_y_of_food] = generateFood();
-
 
 
 let states = [null]
@@ -56,9 +67,7 @@ let states = [null]
 const move = (direction) => {
 
     const travel = () => {
-        ctx.reset();
-        generateBoard();
-        generateFood(prev_x_of_food, prev_y_of_food);
+        eraseSnake();
 
         if (direction === "ArrowUp") {
             y -= STEP;
@@ -74,12 +83,19 @@ const move = (direction) => {
             if (x > 800) x = 0;
         }
 
-        createRectangle(x, y, SNAKE_COLOR);
+        snakeBody.shift();
+        snakeBody.push([x, y]);
 
-        if (x === prev_x_of_food && y === prev_y_of_food) {
+        if (x === x_of_food && y === y_of_food) {
             createRectangle(x, y, BOARD_COLOR);
-            [prev_x_of_food, prev_y_of_food] = generateFood();
+            snakeBody.push([x, y])
+            x_of_food = generateRandom();
+            y_of_food = generateRandom();
         }
+
+        createSnake();
+        generateFood();
+
     }
 
     id = states.pop();
@@ -91,3 +107,5 @@ const move = (direction) => {
 addEventListener("keydown", (e) => {
     move(e.code);
 });
+
+generateBoard();
