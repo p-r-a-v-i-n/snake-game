@@ -1,4 +1,5 @@
 const canvas = document.getElementById("myCanvas");
+const scoreElement = document.getElementById("score");
 
 const FOOD_COLOR = "red";
 const SNAKE_BODY_COLOR = "green";
@@ -6,6 +7,7 @@ const SNAKE_HEAD_COLOR = "blue";
 const BOARD_COLOR = "#181818";
 const STEP = 20;
 
+let userScore = 0;
 let snakeBody = [
     [400, 400],
     [400, 420],
@@ -112,6 +114,8 @@ const move = (direction) => {
         snakeBody.push([x, y]);
 
         if (x === x_of_food && y === y_of_food) {
+            userScore += 1;
+            scoreElement.innerText = `Score: ${userScore}`;
             createRectangle(x, y, BOARD_COLOR);
             snakeBody.push([x, y])
             x_of_food = generateRandom();
@@ -133,4 +137,5 @@ addEventListener("keydown", (e) => {
     move(e.code);
 });
 
+scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
