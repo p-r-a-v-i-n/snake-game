@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
     padding: 0;
@@ -17,4 +18,90 @@ body {
     display: flex;
     justify-content: space-between;
     padding: 5px;
+}
+
+div#score {
+    color: white;
+}
+
+#container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#game {
+    position: relative;
+    /* z-index: 1; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#tutorial {
+    position: absolute;
+    /* z-index: 2; */
+    /* background: lightgray; */
+    height: 600px;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+div#tutorial:hover {
+    margin: 30px;
+    background-color: #252525;
+    border: 1px solid black;
+    opacity: 0.5;
+    transition: 1s;
+}
+
+div#tutorial {
+  margin: 30px;
+  background-color: #252525;
+  border: 1px solid black;
+  opacity: 0.1;
+}
+
+div#tutorial  {
+  margin: 5%;
+  font-weight: bold;
+  color: white;
+  display: flex;
+  flex-direction: column;
+}
+div#tutorial button {
+    cursor: pointer;
+}
+div#tutorial button:hover {
+    height: 25px;
+    width: 100px;
+    transition: 1s;
+}
+
+.animated {
+    animation-duration: 1s;
+    animation-fill-mode: both;
+}
+
+
+@keyframes fadeOut {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.fadeOut {
+    animation-name: fadeOut;
 }

@@ -6,3 +6,5 @@ References:
 - Animating snake movement: https://www.w3schools.com/js/js_htmldom_animate.asp
 - How to align body element to center: https://stackoverflow.com/questions/6464592/how-to-align-entire-html-body-to-the-center
 - Css Id sector: https://www.w3schools.com/cssref/sel_id.php
+- Css Opacity: https://www.w3schools.com/css/css_image_transparency.asp
+- Css Transition Fade Out Effect: https://stackoverflow.com/questions/15907079/css3-transition-fade-out-effect

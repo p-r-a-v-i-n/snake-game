@@ -1,5 +1,8 @@
 const canvas = document.getElementById("myCanvas");
 const scoreElement = document.getElementById("score");
+const tutorialElement = document.getElementById('tutorial');
+const startButton = document.getElementById('start-button');
+
 
 const FOOD_COLOR = "red";
 const SNAKE_BODY_COLOR = "green";
@@ -136,6 +139,11 @@ const move = (direction) => {
 addEventListener("keydown", (e) => {
     move(e.code);
 });
+
+startButton.addEventListener('click', (e) => {
+    tutorialElement.classList.add("fadeOut");
+    // tutorialElement.animate(ANIMATION_CLASS, ANIMATION_DURATION);
+})
 
 scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
