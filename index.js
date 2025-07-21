@@ -63,24 +63,49 @@ const generateBoard = () => {
 
 
 let states = [null]
+let prev_direction = null;
 
 const move = (direction) => {
 
     const travel = () => {
         eraseSnake();
-
         if (direction === "ArrowUp") {
-            y -= STEP;
-            if (y < 0) y = 800;
+            if (prev_direction === "ArrowDown") {
+                y += STEP;
+                if (y > 800) y = 0;
+            } else {
+                y -= STEP;
+                if (y < 0) y = 800;
+                prev_direction = direction;
+            }
+
         } else if (direction === "ArrowDown") {
-            y += STEP;
-            if (y > 800) y = 0;
+            if (prev_direction === "ArrowUp") {
+                y -= STEP;
+                if (y < 0) y = 800;
+            } else {
+                y += STEP;
+                if (y > 800) y = 0;
+                prev_direction = direction;
+            }
         } else if (direction === "ArrowLeft") {
-            x -= STEP;
-            if (x < 0) x = 800;
+            if (prev_direction === "ArrowRight") {
+                x += STEP;
+                if (x > 800) x = 0;
+            } else {
+                x -= STEP;
+                if (x < 0) x = 800;
+                prev_direction = direction;
+            }
         } else if (direction === "ArrowRight") {
-            x += STEP;
-            if (x > 800) x = 0;
+            if (prev_direction === "ArrowLeft") {
+                x -= STEP;
+                if (x < 0) x = 800;
+            } else {
+                x += STEP;
+                if (x > 800) x = 0;
+                prev_direction = direction;
+            }
         }
 
         snakeBody.shift();
