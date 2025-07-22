@@ -5,8 +5,25 @@
         <link rel="stylesheet" href="styles.css">
     </head>
     <body>
-        <div id="score"></div>
-        <canvas id="myCanvas" width="800" height="800"></canvas>
+        <div id="container">
+            <div id="game">
+                <div id="score"></div>
+                <canvas id="myCanvas" width="800" height="800"></canvas>
+            </div>
+            <div id="tutorial" class="animated">
+                <div>
+                    <h2>Welcome to Snake!</h2>
+                    <ul>
+                        <li><h4>⬅ Left - Move left</h4></li>
+                        <li><h4>➡ Right - Move right</h4></li>
+                        <li><h4>⬆ Up - Move up</h4></li>
+                        <li><h4>⬇ Down - Move down</h4></li>
+                    </ul>
+                </div>
+                <h4>Eat the food. Don’t hit the yourself!</h4>
+                <button id="start-button" class="button">Start Game</button>
+            </div>
+        </div>
         <script src="index.js"></script>
     </body>
 </html>

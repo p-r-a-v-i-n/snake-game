@@ -1,5 +1,8 @@
 const canvas = document.getElementById("myCanvas");
 const scoreElement = document.getElementById("score");
+const tutorialElement = document.getElementById('tutorial');
+const startButton = document.getElementById('start-button');
+
 
 const FOOD_COLOR = "red";
 const SNAKE_BODY_COLOR = "green";
@@ -8,6 +11,7 @@ const BOARD_COLOR = "#181818";
 const STEP = 20;
 
 let userScore = 0;
+let isGameStarted = false;
 let snakeBody = [
     [400, 400],
     [400, 420],
@@ -134,8 +138,17 @@ const move = (direction) => {
 }
 
 addEventListener("keydown", (e) => {
-    move(e.code);
+    if (isGameStarted === true) {
+        move(e.code);
+    }
 });
+
+startButton.addEventListener('click', (e) => {
+    tutorialElement.classList.add("fadeOut");
+    // tutorialElement.animate(ANIMATION_CLASS, ANIMATION_DURATION);
+    startButton.classList.remove('button');
+    isGameStarted = true;
+})
 
 scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
