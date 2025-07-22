@@ -1,6 +1,6 @@
-# 🐍 Classic Snake Game – HTML5 Canvas & JavaScript
+# Classic Snake Game
 
-A simple recreation of the classic Snake game using HTML5 `<canvas>` and vanilla JavaScript.
+A simple recreation of the classic Snake game using `<canvas>` element and JavaScript.
 
 This project is designed as a learning exercise to deepen understanding of:
 
@@ -56,7 +56,7 @@ No build tools, frameworks, or installation steps required.
 
 ## References
 
-This project was built using the following resources:
+Following resources was helped me:
 
 - [Canvas Element](https://www.w3schools.com/html/html5_canvas.asp)
 - [Drawing Rectangles](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/canvas)
