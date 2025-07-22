@@ -120,6 +120,8 @@ const move = (direction) => {
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
             scoreElement.innerText = `Score: ${userScore}`;
+            userScore += 1;
+            scoreElement.innerText = `Score: ${userScore}`;
             createRectangle(x, y, BOARD_COLOR);
             snakeBody.push([x, y])
             x_of_food = generateRandom();

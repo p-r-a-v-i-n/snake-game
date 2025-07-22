@@ -47,8 +47,15 @@ div#score {
     width: 70%;
     display: flex;
     flex-direction: column;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+#score {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
 }
 
 div#tutorial {
