@@ -55,9 +55,6 @@ No build tools, frameworks, or installation steps required.
 ---
 
 ## References
-
-Following resources was helped me:
-
 - [Canvas Element](https://www.w3schools.com/html/html5_canvas.asp)
 - [Drawing Rectangles](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/canvas)
 - [Keyboard Events](https://developer.mozilla.org/en-US/docs/Web/API/Element/keydown_event)
