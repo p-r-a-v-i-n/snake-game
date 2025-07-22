@@ -1,8 +1,7 @@
 const canvas = document.getElementById("myCanvas");
 const scoreElement = document.getElementById("score");
+const startButton = document.getElementById("start-button");
 const tutorialElement = document.getElementById('tutorial');
-const startButton = document.getElementById('start-button');
-
 
 const FOOD_COLOR = "red";
 const SNAKE_BODY_COLOR = "green";
