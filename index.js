@@ -9,12 +9,16 @@ const SNAKE_HEAD_COLOR = "blue";
 const BOARD_COLOR = "#181818";
 const STEP = 20;
 
+let gameOver = false;
+
 let userScore = 0;
 let isGameStarted = false;
 let snakeBody = [
     [400, 400],
-    [400, 420],
+    [400, 380],
+    [400, 360]
 ]
+let snakeLength = snakeBody.length;
 let width = 20;
 let height = 20;
 x = 400;
@@ -55,6 +59,91 @@ const generateFood = () => {
     createRectangle(x_of_food, y_of_food, FOOD_COLOR);
 }
 
+const checkOtherNeighbour = (firstNeighbourIndex, skipDirsIndex, dirs) => {
+    let head = snakeBody[snakeBody.length - 1];
+    const [head_x, head_y] = head;
+    for (let i = 0; i < snakeBody.length - 1; i++) {
+        if (i === firstNeighbourIndex) {
+            continue;
+        }
+        const [cx, cy] = snakeBody[i];
+        for (let j = 0; j < dirs.length; j++ ) {
+            if (j === skipDirsIndex) {
+                continue;
+            }
+            let [dx, dy] = dirs[j];
+            if (dx + head_x === cx && dy + head_y === cy) {
+                return true
+            }
+        }
+    }
+
+    return false;
+}
+
+const checkIsGameOver = (direction) => {
+    let head = snakeBody[snakeBody.length - 1];
+    const [head_x, head_y] = head;
+
+    if (direction === 'ArrowUp') {
+        let dirs = [[-STEP, 0], [STEP, 0]]
+    
+        for (let i = 0; i < snakeBody.length - 1; i++) {
+            const [cx, cy] = snakeBody[i];
+            for (let j = 0; j < dirs.length; j++ ) {
+                let [dx, dy] = dirs[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+        }
+    }
+
+    if (direction === 'ArrowDown') {
+        let dirs = [[STEP, 0], [-STEP, 0]]
+
+        for (let i = 0; i < snakeBody.length - 1; i++) {
+            const [cx, cy] = snakeBody[i];
+            for (let j = 0; j < dirs.length; j++ ) {
+                let [dx, dy] = dirs[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+        }
+    }
+
+    if (direction === 'ArrowLeft') {
+        let dirs = [[0, STEP], [0, -STEP]]
+
+        for (let i = 0; i < snakeBody.length - 1; i++) {
+            const [cx, cy] = snakeBody[i];
+            for (let j = 0; j < dirs.length; j++ ) {
+                let [dx, dy] = dirs[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+        }
+    }
+
+    if (direction === 'ArrowRight') {
+        let dirs = [[0, -STEP], [0, STEP]]
+
+        for (let i = 0; i < snakeBody.length - 1; i++) {
+            const [cx, cy] = snakeBody[i];
+            for (let j = 0; j < dirs.length; j++ ) {
+                let [dx, dy] = dirs[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
 
 const generateBoard = () => {
     for (let i = 0; i < 800; i += STEP) {
@@ -67,8 +156,19 @@ const generateBoard = () => {
 };
 
 
+
 let states = [null]
 let prev_direction = null;
+let prevLength = snakeLength;
+
+
+const generateScreenshot = () => {
+    generateBoard();
+    for (let i =0; i < states.length; i++ ) {
+        clearInterval(states[i]);
+    }
+    gameOver = true;
+}
 
 const move = (direction) => {
 
@@ -112,20 +212,29 @@ const move = (direction) => {
                 prev_direction = direction;
             }
         }
-
+        
         snakeBody.shift();
         snakeBody.push([x, y]);
-
+        
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
+            snakeLength += 1;
+            prevLength = snakeLength;
             scoreElement.innerText = `Score: ${userScore}`;
             createRectangle(x, y, BOARD_COLOR);
             snakeBody.push([x, y])
             x_of_food = generateRandom();
             y_of_food = generateRandom();
         }
-
+        
         createSnake();
+        // check if snake touch it's own body
+        if (checkIsGameOver(prev_direction)) {
+            generateScreenshot()
+            createGameOverBanner();
+            return
+        }
+
         generateFood();
 
     }
@@ -137,6 +246,8 @@ const move = (direction) => {
 }
 
 addEventListener("keydown", (e) => {
+    if (gameOver) return;
+    if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.code)) return;
     if (isGameStarted === true) {
         move(e.code);
     }
@@ -151,3 +262,18 @@ startButton.addEventListener('click', (e) => {
 
 scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
+
+
+
+//================================================================================
+
+const createGameOverBanner = () => {
+    const gameOverDiv = document.createElement("div");
+    const gameOverTitle = document.createElement("h4");
+    gameOverTitle.innerText = "Game Over";
+    const gameOverDivContent = document.createTextNode("you played well, Try again.");
+    gameOverDiv.appendChild(gameOverTitle);
+    
+    scoreElement.insertAdjacentElement("afterbegin", gameOverDiv);
+    
+}
