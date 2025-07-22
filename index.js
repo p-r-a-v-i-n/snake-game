@@ -13,6 +13,7 @@ let userScore = 0;
 let snakeBody = [
     [400, 400],
     [400, 380],
+    [400, 360]
 ]
 let snakeLength = snakeBody.length;
 let width = 20;
@@ -227,6 +228,7 @@ const move = (direction) => {
         // check if snake touch it's own body
         if (checkIsGameOver(prev_direction)) {
             generateScreenshot()
+            createGameOverBanner();
             return
         }
 
@@ -242,8 +244,24 @@ const move = (direction) => {
 
 addEventListener("keydown", (e) => {
     if (gameOver) return;
+    if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.code)) return;
     move(e.code);
 });
 
 scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
+
+
+
+//================================================================================
+
+const createGameOverBanner = () => {
+    const gameOverDiv = document.createElement("div");
+    const gameOverTitle = document.createElement("h4");
+    gameOverTitle.innerText = "Game Over";
+    const gameOverDivContent = document.createTextNode("you played well, Try again.");
+    gameOverDiv.appendChild(gameOverTitle);
+    
+    scoreElement.insertAdjacentElement("afterbegin", gameOverDiv);
+    
+}
