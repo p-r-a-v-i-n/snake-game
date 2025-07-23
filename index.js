@@ -86,14 +86,23 @@ const checkIsGameOver = (direction) => {
     const [head_x, head_y] = head;
 
     if (direction === 'ArrowUp') {
-        let dirs = [[-STEP, 0], [STEP, 0]]
-    
+        let dirs = [[-STEP, 0], [STEP, 0]];
+        let frontAndBackDirections = [[0, -STEP], [0, STEP]];
+
         for (let i = 0; i < snakeBody.length - 1; i++) {
             const [cx, cy] = snakeBody[i];
             for (let j = 0; j < dirs.length; j++ ) {
-                let [dx, dy] = dirs[j]
+                let [dx, dy] = dirs[j];
                 if (dx + head_x === cx && dy + head_y === cy) {
                     return checkOtherNeighbour(i, j, dirs);
+                }
+
+            }
+
+            for (let k = 0; k < frontAndBackDirections.length; k++ ) {
+                const [upDown_x, upDown_y] = frontAndBackDirections[k];
+                if ((upDown_x + head_x === cx) && (upDown_y + head_y === cy)) {
+                    return checkOtherNeighbour(i, k, frontAndBackDirections);
                 }
             }
         }
@@ -101,6 +110,7 @@ const checkIsGameOver = (direction) => {
 
     if (direction === 'ArrowDown') {
         let dirs = [[STEP, 0], [-STEP, 0]]
+        let frontAndBackDirections = [[0, STEP], [0, -STEP]];
 
         for (let i = 0; i < snakeBody.length - 1; i++) {
             const [cx, cy] = snakeBody[i];
@@ -108,6 +118,13 @@ const checkIsGameOver = (direction) => {
                 let [dx, dy] = dirs[j]
                 if (dx + head_x === cx && dy + head_y === cy) {
                     return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+
+            for (let j = 0; j < frontAndBackDirections.length; j++ ) {
+                let [dx, dy] = frontAndBackDirections[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, frontAndBackDirections);
                 }
             }
         }
@@ -115,6 +132,7 @@ const checkIsGameOver = (direction) => {
 
     if (direction === 'ArrowLeft') {
         let dirs = [[0, STEP], [0, -STEP]]
+        let frontAndBackDirections = [[-STEP, 0], [STEP, 0]]
 
         for (let i = 0; i < snakeBody.length - 1; i++) {
             const [cx, cy] = snakeBody[i];
@@ -124,11 +142,19 @@ const checkIsGameOver = (direction) => {
                     return checkOtherNeighbour(i, j, dirs);
                 }
             }
+
+            for (let j = 0; j < frontAndBackDirections.length; j++ ) {
+                let [dx, dy] = frontAndBackDirections[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, frontAndBackDirections);
+                }
+            }
         }
     }
 
     if (direction === 'ArrowRight') {
-        let dirs = [[0, -STEP], [0, STEP]]
+        let dirs = [[0, -STEP], [0, STEP]];
+        let frontAndBackDirections = [[STEP, 0], [-STEP, 0]];
 
         for (let i = 0; i < snakeBody.length - 1; i++) {
             const [cx, cy] = snakeBody[i];
@@ -136,6 +162,13 @@ const checkIsGameOver = (direction) => {
                 let [dx, dy] = dirs[j]
                 if (dx + head_x === cx && dy + head_y === cy) {
                     return checkOtherNeighbour(i, j, dirs);
+                }
+            }
+
+            for (let j = 0; j < frontAndBackDirections.length; j++ ) {
+                let [dx, dy] = frontAndBackDirections[j]
+                if (dx + head_x === cx && dy + head_y === cy) {
+                    return checkOtherNeighbour(i, j, frontAndBackDirections);
                 }
             }
         }
