@@ -35,7 +35,7 @@ let [x, y] = snakeBody[snakeLength - 1];
 const ctx = canvas.getContext("2d");
 
 const generateRandom = () => {
-    let randomNum = Math.floor(Math.random() * 781);
+    let randomNum = Math.floor(Math.random() * 801);
     return randomNum % STEP === 0 ? randomNum : generateRandom();
 }
 
@@ -68,8 +68,8 @@ const generateFood = () => {
 }
 
 const generateBoard = () => {
-    for (let i = 0; i < 800; i += STEP) {
-        for (let j = 0; j < 800; j += STEP) {
+    for (let i = 0; i <= 800; i += STEP) {
+        for (let j = 0; j <= 800; j += STEP) {
             createRectangle(i, j, BOARD_COLOR);
         }
     }
