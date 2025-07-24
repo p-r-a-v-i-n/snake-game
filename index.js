@@ -1,7 +1,9 @@
 const canvas = document.getElementById("myCanvas");
 const scoreElement = document.getElementById("score");
 const startButton = document.getElementById("start-button");
-const tutorialElement = document.getElementById('tutorial');
+let tutorialElement = document.getElementById('tutorial');
+const gameElement = document.getElementById('game');
+let restartButton = document.createElement("button");
 
 const FOOD_COLOR = "red";
 const SNAKE_BODY_COLOR = "green";
@@ -19,6 +21,12 @@ let snakeBody = [
     [420, 400],
     [440, 400]
 ]
+const snakeInitialBody = [
+    [400, 400],
+    [420, 400],
+    [440, 400]
+]
+
 let snakeLength = snakeBody.length;
 let width = 20;
 let height = 20;
@@ -78,14 +86,14 @@ let prevLength = snakeLength;
 
 const generateScreenshot = () => {
     generateBoard();
-    for (let i =0; i < states.length; i++ ) {
+    for (let i = 0; i < states.length; i++) {
         clearInterval(states[i]);
     }
     gameOver = true;
+    [x, y] = snakeInitialBody[snakeInitialBody.length - 1]
 }
 
 const move = (direction) => {
-
     const travel = () => {
         eraseSnake();
         if (direction === "ArrowUp") {
@@ -126,9 +134,9 @@ const move = (direction) => {
                 prev_direction = direction;
             }
         }
-        
+
         snakeBody.push([x, y]);
-        
+
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
             scoreElement.innerText = `Score: ${userScore}`;
@@ -138,15 +146,15 @@ const move = (direction) => {
         } else {
             snakeBody.shift();
         }
-        
+
         createSnake();
         // check if snake touch it's own body
         let n = snakeBody.length;
-        for (let i = 0; i < snakeBody.length - 1; i++ ) {
+        for (let i = 0; i < snakeBody.length - 1; i++) {
             if (snakeBody[i][0] === snakeBody[n - 1][0] && snakeBody[i][1] === snakeBody[n - 1][1]) {
-
                 generateScreenshot()
                 createGameOverBanner();
+                prev_direction = null;
                 return
             }
         }
@@ -174,9 +182,26 @@ addEventListener("keydown", (e) => {
 
 startButton.addEventListener('click', (e) => {
     tutorialElement.classList.add("fadeOut");
-    // tutorialElement.animate(ANIMATION_CLASS, ANIMATION_DURATION);
     startButton.classList.remove('button');
     isGameStarted = true;
+})
+
+restartButton.addEventListener('click', (e) => {
+    tutorialElement.classList.add('fadeOut');
+    restartButton.classList.remove('button');
+    isGameStarted = true;
+    CHECKED_GAME_START_DIRECTION = false;
+    gameOver = false;
+    userScore = 0;
+    scoreElement.innerText = `Score: ${userScore}`;
+    while (snakeBody.length > 0) {
+        snakeBody.pop();
+    }
+    for (let i = 0; i < snakeInitialBody.length; i++) {
+        snakeBody.push(snakeInitialBody[i]);
+    }
+    generateBoard()
+
 })
 
 scoreElement.innerText = `Score: ${userScore}`;
@@ -187,13 +212,19 @@ generateBoard();
 //================================================================================
 
 const createGameOverBanner = () => {
-    const gameOverDiv = document.createElement("div");
-    const gameOverTitle = document.createElement("h4");
-    gameOverTitle.style.color = "white";
-    gameOverTitle.innerText = "Game Over";
-    const gameOverDivContent = document.createTextNode("you played well, Try again.");
-    gameOverDiv.appendChild(gameOverTitle);
-    
-    tutorialElement.insertAdjacentElement("afterend", gameOverDiv);
-    
-}
+    const list = document.getElementById('list');
+    restartButton.innerText = "Restart";
+    restartButton.classList.add('button');
+
+    if (list) list.remove();
+    if (startButton) startButton.remove();
+
+    let title = document.getElementById("title");
+    let description = document.getElementById('description');
+
+    title.innerText = "GAME OVER";
+    description.innerText = `Score: ${userScore}`;
+    tutorialElement.appendChild(restartButton);
+
+    tutorialElement.classList.remove('fadeOut');
+};
