@@ -13,6 +13,7 @@ const STEP = 20;
 let CHECKED_GAME_START_DIRECTION = false;
 
 let gameOver = false;
+let isPaused = false;
 
 let userScore = 0;
 let isGameStarted = false;
@@ -95,6 +96,8 @@ const generateScreenshot = () => {
 
 const move = (direction) => {
     const travel = () => {
+        if (isPaused) return;
+        
         eraseSnake();
         if (direction === "ArrowUp") {
             if (prev_direction === "ArrowDown") {
@@ -171,11 +174,26 @@ const move = (direction) => {
 
 addEventListener("keydown", (e) => {
     if (gameOver) return;
+    
+    // Handle pause/resume with spacebar
+    if (e.code === 'Space') {
+        e.preventDefault();
+        if (isGameStarted && CHECKED_GAME_START_DIRECTION) {
+            isPaused = !isPaused;
+            if (isPaused) {
+                showPauseOverlay();
+            } else {
+                hidePauseOverlay();
+            }
+        }
+        return;
+    }
+    
     if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.code)) return;
     if (['ArrowDown', 'ArrowUp', 'ArrowRight'].includes(e.code)) {
         CHECKED_GAME_START_DIRECTION = true;
     }
-    if (isGameStarted === true && CHECKED_GAME_START_DIRECTION) {
+    if (isGameStarted === true && CHECKED_GAME_START_DIRECTION && !isPaused) {
         move(e.code);
     }
 });
@@ -192,6 +210,8 @@ restartButton.addEventListener('click', (e) => {
     isGameStarted = true;
     CHECKED_GAME_START_DIRECTION = false;
     gameOver = false;
+    isPaused = false;
+    hidePauseOverlay();
     userScore = 0;
     scoreElement.innerText = `Score: ${userScore}`;
     while (snakeBody.length > 0) {
@@ -210,6 +230,29 @@ generateBoard();
 
 
 //================================================================================
+
+const showPauseOverlay = () => {
+    let pauseOverlay = document.getElementById('pause-overlay');
+    if (!pauseOverlay) {
+        pauseOverlay = document.createElement('div');
+        pauseOverlay.id = 'pause-overlay';
+        pauseOverlay.innerHTML = `
+            <div class="pause-content">
+                <h3>GAME PAUSED</h3>
+                <p>Press SPACE to resume</p>
+            </div>
+        `;
+        document.getElementById('container').appendChild(pauseOverlay);
+    }
+    pauseOverlay.style.display = 'flex';
+};
+
+const hidePauseOverlay = () => {
+    const pauseOverlay = document.getElementById('pause-overlay');
+    if (pauseOverlay) {
+        pauseOverlay.style.display = 'none';
+    }
+};
 
 const createGameOverBanner = () => {
     const list = document.getElementById('list');
