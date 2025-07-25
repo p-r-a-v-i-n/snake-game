@@ -228,3 +228,14 @@ const createGameOverBanner = () => {
 
     tutorialElement.classList.remove('fadeOut');
 };
+
+
+document.querySelectorAll("#mobile-controls .btn").forEach(btn => {
+    btn.addEventListener("touchstart", (e) => {
+        const direction = btn.dataset.dir;
+        e.preventDefault(); // prevent double-tap zoom
+        if (direction) {
+            move(direction);
+        }
+    });
+});

@@ -1,9 +1,15 @@
-html,
-body {
-    width: 100%;
-    height: 100%;
-    padding: 0;
+body,
+html {
     margin: 0;
+    padding: 0;
+    overflow: hidden;
+    /* 💡 Prevent page scrolling */
+    background-color: #202020;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 body {
@@ -11,77 +17,87 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-div#score {
-    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #container {
-    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 #game {
+    width: 100vw;
+    max-width: 90vmin;
+    height: auto;
     position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+
+canvas {
+    width: 100%;
+    height: auto;
+    display: block;
+    background-color: #181818;
+    border: 2px solid #333;
+    image-rendering: pixelated;
+}
+
+#score {
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+    padding: 10px 0;
 }
 
 #tutorial {
     position: absolute;
-    height: 600px;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-}
-
-#score {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
-}
-
-div#tutorial {
-    margin: 5%;
-    color: white;
-    display: flex;
-    flex-direction: column;
+    top: 10%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 500px;
     background-color: #181818;
-    opacity: 0.1;
+    color: white;
+    border-radius: 10px;
+    padding: 2rem;
+    z-index: 100;
+    text-align: center;
+    opacity: 0.95;
 }
 
-div#tutorial:hover {
-    margin: 30px;
+
+#tutorial:hover {
     background-color: #222222;
-    opacity: 0.5;
-    transition: 1s;
+    opacity: 1;
+    transition: 0.5s;
 }
 
 .button {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    margin-top: 20px;
+    border-radius: 8px;
+    font-size: 1rem;
     cursor: pointer;
-    transition: backgroud-color 2s;
+    border: none;
 }
 
+.button:hover {
+    background-color: #444;
+}
 
 .animated {
     animation-duration: 1s;
     animation-fill-mode: both;
 }
 
-
 @keyframes fadeOut {
     0% {
-        opacity: 0.8;
+        opacity: 0.95;
     }
 
     100% {
@@ -91,4 +107,59 @@ div#tutorial:hover {
 
 .fadeOut {
     animation-name: fadeOut;
+}
+
+/* 📱 Media Queries */
+@media screen and (max-width: 600px) {
+    #tutorial {
+        padding: 1rem;
+    }
+
+    #score {
+        font-size: 1rem;
+    }
+
+    .button {
+        width: 100%;
+        font-size: 1rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h4 {
+        font-size: 1rem;
+    }
+}
+
+#mobile-controls {
+    display: none; /* hidden by default */
+    margin-top: 20px;
+}
+
+#mobile-controls .row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 5px 0;
+}
+
+#mobile-controls .btn {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 1.5rem;
+    border-radius: 10px;
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+/* Only show controls on mobile */
+@media screen and (max-width: 768px) {
+    #mobile-controls {
+        display: block;
+    }
 }
