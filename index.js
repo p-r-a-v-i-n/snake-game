@@ -14,6 +14,9 @@ let CHECKED_GAME_START_DIRECTION = false;
 
 let gameOver = false;
 let isPaused = false;
+let gameSpeed = 200; // Starting speed in milliseconds
+const MIN_SPEED = 50; // Minimum speed (maximum difficulty)
+const SPEED_INCREASE = 4; // Speed increase per food eaten
 
 let userScore = 0;
 let isGameStarted = false;
@@ -143,6 +146,10 @@ const move = (direction) => {
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
             scoreElement.innerText = `Score: ${userScore}`;
+            // Increase speed (decrease interval) by 4ms, minimum 50ms
+            if (gameSpeed > MIN_SPEED) {
+                gameSpeed = Math.max(MIN_SPEED, gameSpeed - SPEED_INCREASE);
+            }
             createRectangle(x, y, BOARD_COLOR);
             x_of_food = generateRandom();
             y_of_food = generateRandom();
@@ -168,7 +175,7 @@ const move = (direction) => {
 
     id = states.pop();
     clearInterval(id);
-    id = setInterval(travel, 100);
+    id = setInterval(travel, gameSpeed);
     states.push(id);
 }
 
@@ -211,6 +218,7 @@ restartButton.addEventListener('click', (e) => {
     CHECKED_GAME_START_DIRECTION = false;
     gameOver = false;
     isPaused = false;
+    gameSpeed = 200; // Reset speed to starting value
     hidePauseOverlay();
     userScore = 0;
     scoreElement.innerText = `Score: ${userScore}`;
@@ -238,7 +246,7 @@ const showPauseOverlay = () => {
         pauseOverlay.id = 'pause-overlay';
         pauseOverlay.innerHTML = `
             <div class="pause-content">
-                <h3>GAME PAUSED</h3>
+                <h2>GAME PAUSED</h2>
                 <p>Press SPACE to resume</p>
             </div>
         `;
