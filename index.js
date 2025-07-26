@@ -14,9 +14,10 @@ let CHECKED_GAME_START_DIRECTION = false;
 
 let gameOver = false;
 let isPaused = false;
-let gameSpeed = 200; // Starting speed in milliseconds
-const MIN_SPEED = 50; // Minimum speed (maximum difficulty)
-const SPEED_INCREASE = 4; // Speed increase per food eaten
+
+let gameSpeed = 120; // Starting speed in milliseconds
+const MAX_SPEED = 40; // Max speed (maximum difficulty)
+const ACCERATION_FACTOR = 0.02; // Speed increase per food eaten
 
 let userScore = 0;
 let isGameStarted = false;
@@ -102,6 +103,7 @@ const move = (direction) => {
         if (isPaused) return;
         
         eraseSnake();
+
         if (direction === "ArrowUp") {
             if (prev_direction === "ArrowDown") {
                 y += STEP;
@@ -146,10 +148,12 @@ const move = (direction) => {
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
             scoreElement.innerText = `Score: ${userScore}`;
-            // Increase speed (decrease interval) by 4ms, minimum 50ms
-            if (gameSpeed > MIN_SPEED) {
-                gameSpeed = Math.max(MIN_SPEED, gameSpeed - SPEED_INCREASE);
+
+            // Increase speed (decrease interval) by %2 percent of gameSpeed, max  50ms
+            if (gameSpeed > MAX_SPEED) {
+                gameSpeed = Math.max(MAX_SPEED, gameSpeed - (gameSpeed * ACCERATION_FACTOR));
             }
+            
             createRectangle(x, y, BOARD_COLOR);
             x_of_food = generateRandom();
             y_of_food = generateRandom();
@@ -218,9 +222,10 @@ restartButton.addEventListener('click', (e) => {
     CHECKED_GAME_START_DIRECTION = false;
     gameOver = false;
     isPaused = false;
-    gameSpeed = 200; // Reset speed to starting value
+    gameSpeed = 120;
     hidePauseOverlay();
     userScore = 0;
+
     scoreElement.innerText = `Score: ${userScore}`;
     while (snakeBody.length > 0) {
         snakeBody.pop();
