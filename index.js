@@ -95,6 +95,7 @@ const move = (direction) => {
     const travel = () => {
         if (isPaused) return;
 
+
         if (direction === "ArrowUp") {
             if (prev_direction === "ArrowDown") {
                 y += STEP;
@@ -139,9 +140,11 @@ const move = (direction) => {
             scoreElement.innerText = `Score: ${userScore}`;
 
             // Increase speed (decrease interval) by %2 percent of gameSpeed, max  50ms
+
             if (gameSpeed > MAX_SPEED) {
                 gameSpeed = Math.max(MAX_SPEED, gameSpeed - (gameSpeed * ACCERATION_FACTOR));
             }
+
             
             createRectangle(x, y, BOARD_COLOR);
             x_of_food = generateRandom();
