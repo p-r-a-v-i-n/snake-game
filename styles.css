@@ -51,6 +51,14 @@ div#score {
     padding: 5px;
 }
 
+#title{
+    font-size: 50px;
+}
+
+#description{
+    font-size: 35px;
+}
+
 div#tutorial {
     margin: 5%;
     color: white;
