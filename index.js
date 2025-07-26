@@ -206,13 +206,13 @@ addEventListener("keydown", (e) => {
 
 startButton.addEventListener('click', (e) => {
     tutorialElement.classList.add("fadeOut");
-    startButton.classList.remove('button');
+    startButton.style.cursor = "auto";
     isGameStarted = true;
 })
 
 restartButton.addEventListener('click', (e) => {
     tutorialElement.classList.add('fadeOut');
-    restartButton.classList.remove('button');
+    restartButton.style.cursor = "auto";
     isGameStarted = true;
     CHECKED_GAME_START_DIRECTION = false;
     gameOver = false;
