@@ -61,13 +61,6 @@ const createSnake = () => {
     }
 }
 
-const eraseSnake = () => {
-    for (let i = 0; i < snakeBody.length; i++) {
-        const [dx, dy] = snakeBody[i];
-        createRectangle(dx, dy, BOARD_COLOR);
-    }
-}
-
 const generateFood = () => {
     createRectangle(x_of_food, y_of_food, FOOD_COLOR);
 }
@@ -101,8 +94,7 @@ const generateScreenshot = () => {
 const move = (direction) => {
     const travel = () => {
         if (isPaused) return;
-        
-        eraseSnake();
+
 
         if (direction === "ArrowUp") {
             if (prev_direction === "ArrowDown") {
@@ -143,23 +135,31 @@ const move = (direction) => {
             }
         }
 
-        snakeBody.push([x, y]);
-
         if (x === x_of_food && y === y_of_food) {
             userScore += 1;
             scoreElement.innerText = `Score: ${userScore}`;
 
             // Increase speed (decrease interval) by %2 percent of gameSpeed, max  50ms
-            gameSpeed = Math.max(MAX_SPEED, gameSpeed - (gameSpeed * ACCERATION_FACTOR));
+
+            if (gameSpeed > MAX_SPEED) {
+                gameSpeed = Math.max(MAX_SPEED, gameSpeed - (gameSpeed * ACCERATION_FACTOR));
+            }
+
             
             createRectangle(x, y, BOARD_COLOR);
             x_of_food = generateRandom();
             y_of_food = generateRandom();
+
         } else {
-            snakeBody.shift();
+            let lastPos = snakeBody.shift();
+            createRectangle(lastPos[0], lastPos[1], BOARD_COLOR);
         }
 
-        createSnake();
+        createRectangle(x, y, SNAKE_HEAD_COLOR);
+        let lastHeadPos = snakeBody[snakeBody.length - 1]
+        createRectangle(lastHeadPos[0], lastHeadPos[1], SNAKE_BODY_COLOR);
+        snakeBody.push([x, y]);
+
         // check if snake touch it's own body
         let n = snakeBody.length;
         for (let i = 0; i < snakeBody.length - 1; i++) {
@@ -231,7 +231,8 @@ restartButton.addEventListener('click', (e) => {
     for (let i = 0; i < snakeInitialBody.length; i++) {
         snakeBody.push(snakeInitialBody[i]);
     }
-    generateBoard()
+    
+    generateBoard();
 
 })
 
