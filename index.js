@@ -10,6 +10,13 @@ const SNAKE_BODY_COLOR = "green";
 const SNAKE_HEAD_COLOR = "blue";
 const BOARD_COLOR = "#181818";
 const STEP = 20;
+const OPPOSITE_DIRECTION_MAP =  {
+    "ArrowLeft": "ArrowRight",
+    "ArrowRight": "ArrowLeft",
+    "ArrowUp": "ArrowDown",
+    "ArrowDown": "ArrowUp"
+}
+
 let CHECKED_GAME_START_DIRECTION = false;
 
 let gameOver = false;
@@ -181,6 +188,10 @@ const move = (direction) => {
 addEventListener("keydown", (e) => {
     if (gameOver) return;
     
+    if (prev_direction === e.code || prev_direction === OPPOSITE_DIRECTION_MAP[e.code]) {
+        return
+    }
+
     // Handle pause/resume with spacebar
     if (e.code === 'Space') {
         e.preventDefault();
