@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./public/dist",
+    "module": "esnext",
+    "target": "esnext",
+    "strict": true,
+    "sourceMap": true
+  }
+}
