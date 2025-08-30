@@ -16,14 +16,14 @@ Thanks for your interest in contributing!
 3. Install dependencies and run checks:
    ```bash
    npm install
-   npm run lint
-   npm run format:check
    ```
    If format:check reports any issues, fix them by running: `npm run format`
 4. Make changes, then test:
    open index.html file in browser.
 5. Commit and push:
    ```bash
+   npm run lint
+   npm run format:check
    git add .
    git commit -m "Your message"
    git push origin your-feature-branch-name
