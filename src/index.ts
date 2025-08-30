@@ -1,30 +1,29 @@
-
 // Types
 type StateType = number | undefined;
 type CordinateType = [number, number];
 type SnakeBodyType = CordinateType[];
-type Direction = "ArrowLeft" | "ArrowRight" | "ArrowUp" | "ArrowDown";
+type Direction = 'ArrowLeft' | 'ArrowRight' | 'ArrowUp' | 'ArrowDown';
 type PrevDirectionType = Direction | null;
 
+const canvas = document.getElementById('myCanvas') as HTMLCanvasElement;
+const scoreElement = document.getElementById('score') as HTMLElement;
+const startButton = document.getElementById(
+  'start-button'
+) as HTMLButtonElement;
+const tutorialElement = document.getElementById('tutorial') as HTMLElement;
+const restartButton = document.createElement('button') as HTMLButtonElement;
 
-const canvas = document.getElementById("myCanvas") as HTMLCanvasElement;
-const scoreElement = document.getElementById("score") as HTMLElement;
-const startButton = document.getElementById("start-button") as HTMLButtonElement;
-let tutorialElement = document.getElementById('tutorial') as HTMLElement;
-const gameElement = document.getElementById('game') as HTMLElement;
-let restartButton = document.createElement("button") as HTMLButtonElement;
-
-const FOOD_COLOR = "red";
-const SNAKE_BODY_COLOR = "green";
-const SNAKE_HEAD_COLOR = "blue";
-const BOARD_COLOR = "#181818";
+const FOOD_COLOR = 'red';
+const SNAKE_BODY_COLOR = 'green';
+const SNAKE_HEAD_COLOR = 'blue';
+const BOARD_COLOR = '#181818';
 const STEP = 20;
-const OPPOSITE_DIRECTION_MAP: Record<Direction, Direction> =  {
-    "ArrowLeft": "ArrowRight",
-    "ArrowRight": "ArrowLeft",
-    "ArrowUp": "ArrowDown",
-    "ArrowDown": "ArrowUp"
-}
+const OPPOSITE_DIRECTION_MAP: Record<Direction, Direction> = {
+  ArrowLeft: 'ArrowRight',
+  ArrowRight: 'ArrowLeft',
+  ArrowUp: 'ArrowDown',
+  ArrowDown: 'ArrowUp',
+};
 
 let CHECKED_GAME_START_DIRECTION = false;
 
@@ -38,270 +37,269 @@ const ACCERATION_FACTOR = 0.02; // Speed increase per food eaten
 let userScore = 0;
 let isGameStarted = false;
 let snakeBody: SnakeBodyType = [
-    [400, 400],
-    [420, 400],
-    [440, 400]
-]
+  [400, 400],
+  [420, 400],
+  [440, 400],
+];
 const snakeInitialBody: SnakeBodyType = [
-    [400, 400],
-    [420, 400],
-    [440, 400]
-]
+  [400, 400],
+  [420, 400],
+  [440, 400],
+];
 
-let snakeLength = snakeBody.length;
-let width = 20;
-let height = 20;
-let [x, y]: CordinateType = snakeBody.at(-1)!; 
+const width = 20;
+const height = 20;
+let [x, y]: CordinateType = snakeBody.at(-1)!;
 
-const ctx = (canvas as HTMLCanvasElement).getContext("2d")!;
+const ctx = (canvas as HTMLCanvasElement).getContext('2d')!;
 
-const generateRandom = (): number =>  {
-    let randomNum = Math.floor(Math.random() * 801);
-    return randomNum % STEP === 0 ? randomNum : generateRandom();
-}
+const generateRandom = (): number => {
+  const randomNum = Math.floor(Math.random() * 801);
+  return randomNum % STEP === 0 ? randomNum : generateRandom();
+};
 
 let x_of_food = generateRandom();
 let y_of_food = generateRandom();
 
-
-const createRectangle = (X: any, Y: any, color: any) => {
-    ctx.fillStyle = color;
-    ctx.fillRect(X, Y, width, height);
-}
-
-const createSnake = () => {
-    for (let i = 0; i < snakeBody.length; i++) {
-        const [dx, dy]: CordinateType = snakeBody.at(i)!;
-        const color = i === snakeBody.length - 1 ? SNAKE_HEAD_COLOR : SNAKE_BODY_COLOR;
-        createRectangle(dx, dy, color);
-    }
-}
-
-const generateFood = () => {
-    createRectangle(x_of_food, y_of_food, FOOD_COLOR);
-}
-
-const generateBoard = () => {
-    for (let i = 0; i <= 800; i += STEP) {
-        for (let j = 0; j <= 800; j += STEP) {
-            createRectangle(i, j, BOARD_COLOR);
-        }
-    }
-    createSnake();
-    generateFood();
+const createRectangle = (X: number, Y: number, color: string) => {
+  ctx.fillStyle = color;
+  ctx.fillRect(X, Y, width, height);
 };
 
+const createSnake = () => {
+  for (let i = 0; i < snakeBody.length; i++) {
+    const [dx, dy]: CordinateType = snakeBody.at(i)!;
+    const color =
+      i === snakeBody.length - 1 ? SNAKE_HEAD_COLOR : SNAKE_BODY_COLOR;
+    createRectangle(dx, dy, color);
+  }
+};
 
+const generateFood = () => {
+  createRectangle(x_of_food, y_of_food, FOOD_COLOR);
+};
 
-let states:StateType[] = [undefined]
-let prev_direction:PrevDirectionType = null;
-let prevLength = snakeLength;
+const generateBoard = () => {
+  for (let i = 0; i <= 800; i += STEP) {
+    for (let j = 0; j <= 800; j += STEP) {
+      createRectangle(i, j, BOARD_COLOR);
+    }
+  }
+  createSnake();
+  generateFood();
+};
 
+const states: StateType[] = [undefined];
+let prev_direction: PrevDirectionType = null;
 
 const generateScreenshot = () => {
-    generateBoard();
-    for (let i = 0; i < states.length; i++) {
-        clearInterval(states[i]);
-    }
-    gameOver = true;
-    let [x, y]: CordinateType = snakeInitialBody.at(-1)!;
-}
+  generateBoard();
+  for (let i = 0; i < states.length; i++) {
+    clearInterval(states[i]);
+  }
+  gameOver = true;
+  const [dx, dy]: CordinateType = snakeInitialBody.at(-1)!;
+  x = dx;
+  y = dy;
+};
 
 const move = (direction: PrevDirectionType) => {
-    const travel = () => {
-        if (isPaused) return;
+  const travel = () => {
+    if (isPaused) return;
 
-        if (direction === "ArrowUp") {
-            if (prev_direction === "ArrowDown") {
-                y += STEP;
-                if (y > 800) y = 0;
-            } else {
-                y -= STEP;
-                if (y < 0) y = 800;
-                prev_direction = direction;
-            }
-
-        } else if (direction === "ArrowDown") {
-            if (prev_direction === "ArrowUp") {
-                y -= STEP;
-                if (y < 0) y = 800;
-            } else {
-                y += STEP;
-                if (y > 800) y = 0;
-                prev_direction = direction;
-            }
-        } else if (direction === "ArrowLeft") {
-            if (prev_direction === "ArrowRight") {
-                x += STEP;
-                if (x > 800) x = 0;
-            } else {
-                x -= STEP;
-                if (x < 0) x = 800;
-                prev_direction = direction;
-            }
-        } else if (direction === "ArrowRight") {
-            if (prev_direction === "ArrowLeft") {
-                x -= STEP;
-                if (x < 0) x = 800;
-            } else {
-                x += STEP;
-                if (x > 800) x = 0;
-                prev_direction = direction;
-            }
-        }
-
-        if (x === x_of_food && y === y_of_food) {
-            userScore += 1;
-            scoreElement.innerText = `Score: ${userScore}`;
-
-            // Increase speed (decrease interval) by %2 percent of gameSpeed, max  50ms
-            if (gameSpeed > MAX_SPEED) {
-                gameSpeed = Math.max(MAX_SPEED, gameSpeed - (gameSpeed * ACCERATION_FACTOR));
-            }
-            
-            createRectangle(x, y, BOARD_COLOR);
-            x_of_food = generateRandom();
-            y_of_food = generateRandom();
-
-        } else {
-            let lastPos = snakeBody.shift();
-            if (lastPos) {
-                createRectangle(lastPos[0], lastPos[1], BOARD_COLOR);
-            }
-        }
-
-        createRectangle(x, y, SNAKE_HEAD_COLOR);
-        let lastHeadPos = snakeBody[snakeBody.length - 1]
-        if (lastHeadPos) {
-            createRectangle(lastHeadPos[0], lastHeadPos[1], SNAKE_BODY_COLOR);
-        }
-        snakeBody.push([x, y]);
-
-        // check if snake touch it's own body
-
-        for (let i = 0; i < snakeBody.length - 1; i++) {
-            const [xi, yi] = snakeBody.at(i)!;
-            const [xHead, yHead] = snakeBody.at(-1)!;
-
-            if (xi === xHead && yi === yHead) {
-                generateScreenshot();
-                createGameOverBanner();
-                prev_direction = null;
-                return;
-            }
-        }
-
-
-        generateFood();
-
+    if (direction === 'ArrowUp') {
+      if (prev_direction === 'ArrowDown') {
+        y += STEP;
+        if (y > 800) y = 0;
+      } else {
+        y -= STEP;
+        if (y < 0) y = 800;
+        prev_direction = direction;
+      }
+    } else if (direction === 'ArrowDown') {
+      if (prev_direction === 'ArrowUp') {
+        y -= STEP;
+        if (y < 0) y = 800;
+      } else {
+        y += STEP;
+        if (y > 800) y = 0;
+        prev_direction = direction;
+      }
+    } else if (direction === 'ArrowLeft') {
+      if (prev_direction === 'ArrowRight') {
+        x += STEP;
+        if (x > 800) x = 0;
+      } else {
+        x -= STEP;
+        if (x < 0) x = 800;
+        prev_direction = direction;
+      }
+    } else if (direction === 'ArrowRight') {
+      if (prev_direction === 'ArrowLeft') {
+        x -= STEP;
+        if (x < 0) x = 800;
+      } else {
+        x += STEP;
+        if (x > 800) x = 0;
+        prev_direction = direction;
+      }
     }
 
-    let id = states.pop();
-    if (id !== undefined) clearInterval(id);
-    id = setInterval(travel, gameSpeed);
-    states.push(id);
-}
+    if (x === x_of_food && y === y_of_food) {
+      userScore += 1;
+      scoreElement.innerText = `Score: ${userScore}`;
 
-addEventListener("keydown", (e) => {
-    if (gameOver) return;
-    const code = e.code as Direction;
-    if (prev_direction === code || prev_direction === OPPOSITE_DIRECTION_MAP[code]) {
-        return
+      // Increase speed (decrease interval) by %2 percent of gameSpeed, max  50ms
+      if (gameSpeed > MAX_SPEED) {
+        gameSpeed = Math.max(
+          MAX_SPEED,
+          gameSpeed - gameSpeed * ACCERATION_FACTOR
+        );
+      }
+
+      createRectangle(x, y, BOARD_COLOR);
+      x_of_food = generateRandom();
+      y_of_food = generateRandom();
+    } else {
+      const lastPos = snakeBody.shift();
+      if (lastPos) {
+        createRectangle(lastPos[0], lastPos[1], BOARD_COLOR);
+      }
     }
 
-    // Handle pause/resume with spacebar
-    if (e.code === 'Space') {
-        e.preventDefault();
-        if (isGameStarted && CHECKED_GAME_START_DIRECTION) {
-            isPaused = !isPaused;
-            if (isPaused) {
-                showPauseOverlay();
-            } else {
-                hidePauseOverlay();
-            }
-        }
+    createRectangle(x, y, SNAKE_HEAD_COLOR);
+    const lastHeadPos = snakeBody[snakeBody.length - 1];
+    if (lastHeadPos) {
+      createRectangle(lastHeadPos[0], lastHeadPos[1], SNAKE_BODY_COLOR);
+    }
+    snakeBody.push([x, y]);
+
+    // check if snake touch it's own body
+
+    for (let i = 0; i < snakeBody.length - 1; i++) {
+      const [xi, yi] = snakeBody.at(i)!;
+      const [xHead, yHead] = snakeBody.at(-1)!;
+
+      if (xi === xHead && yi === yHead) {
+        generateScreenshot();
+        createGameOverBanner();
+        prev_direction = null;
         return;
+      }
     }
-    
-    if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(code)) return;
-    if (['ArrowDown', 'ArrowUp', 'ArrowRight'].includes(code)) {
-        CHECKED_GAME_START_DIRECTION = true;
+
+    generateFood();
+  };
+
+  let id = states.pop();
+  if (id !== undefined) clearInterval(id);
+  id = setInterval(travel, gameSpeed);
+  states.push(id);
+};
+
+addEventListener('keydown', (e) => {
+  if (gameOver) return;
+  const code = e.code as Direction;
+  if (
+    prev_direction === code ||
+    prev_direction === OPPOSITE_DIRECTION_MAP[code]
+  ) {
+    return;
+  }
+
+  // Handle pause/resume with spacebar
+  if (e.code === 'Space') {
+    e.preventDefault();
+    if (isGameStarted && CHECKED_GAME_START_DIRECTION) {
+      isPaused = !isPaused;
+      if (isPaused) {
+        showPauseOverlay();
+      } else {
+        hidePauseOverlay();
+      }
     }
-    if (isGameStarted === true && CHECKED_GAME_START_DIRECTION && !isPaused) {
-        move(code);
-    }
+    return;
+  }
+
+  if (!['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(code))
+    return;
+  if (['ArrowDown', 'ArrowUp', 'ArrowRight'].includes(code)) {
+    CHECKED_GAME_START_DIRECTION = true;
+  }
+  if (isGameStarted === true && CHECKED_GAME_START_DIRECTION && !isPaused) {
+    move(code);
+  }
 });
 
-startButton.addEventListener('click', (e) => {
-    tutorialElement.classList.add("fadeOut");
-    startButton.style.cursor = "auto";
-    isGameStarted = true;
-})
+startButton.addEventListener('click', () => {
+  tutorialElement.classList.add('fadeOut');
+  startButton.style.cursor = 'auto';
+  isGameStarted = true;
+});
 
-restartButton.addEventListener('click', (e) => {
-    tutorialElement.classList.add('fadeOut');
-    restartButton.style.cursor = "auto";
-    isGameStarted = true;
-    CHECKED_GAME_START_DIRECTION = false;
-    gameOver = false;
-    isPaused = false;
-    gameSpeed = 120;
-    hidePauseOverlay();
-    userScore = 0;
+restartButton.addEventListener('click', () => {
+  tutorialElement.classList.add('fadeOut');
+  restartButton.style.cursor = 'auto';
+  isGameStarted = true;
+  CHECKED_GAME_START_DIRECTION = false;
+  gameOver = false;
+  isPaused = false;
+  gameSpeed = 120;
+  hidePauseOverlay();
+  userScore = 0;
 
-    scoreElement.innerText = `Score: ${userScore}`;
-    snakeBody = [...snakeInitialBody];
-    [x, y] = snakeBody.at(-1)!; // reset head position 
-    
-    generateBoard();
+  scoreElement.innerText = `Score: ${userScore}`;
+  snakeBody = [...snakeInitialBody];
+  [x, y] = snakeBody.at(-1)!; // reset head position
 
-})
+  generateBoard();
+});
 
 scoreElement.innerText = `Score: ${userScore}`;
 generateBoard();
 
-
-
 //================================================================================
 
 const showPauseOverlay = () => {
-    let pauseOverlay = document.getElementById('pause-overlay');
-    if (!pauseOverlay) {
-        pauseOverlay = document.createElement('div');
-        pauseOverlay.id = 'pause-overlay';
-        pauseOverlay.innerHTML = `
+  let pauseOverlay = document.getElementById('pause-overlay');
+  if (!pauseOverlay) {
+    pauseOverlay = document.createElement('div');
+    pauseOverlay.id = 'pause-overlay';
+    pauseOverlay.innerHTML = `
             <div class="pause-content">
                 <h2>GAME PAUSED</h2>
                 <p>Press SPACE to resume</p>
             </div>
         `;
-        let containerElement = document.getElementById('container') as HTMLElement;
-        containerElement.appendChild(pauseOverlay);
-    }
-    pauseOverlay.style.display = 'flex';
+    const containerElement = document.getElementById(
+      'container'
+    ) as HTMLElement;
+    containerElement.appendChild(pauseOverlay);
+  }
+  pauseOverlay.style.display = 'flex';
 };
 
 const hidePauseOverlay = () => {
-    const pauseOverlay = document.getElementById('pause-overlay');
-    if (pauseOverlay) {
-        pauseOverlay.style.display = 'none';
-    }
+  const pauseOverlay = document.getElementById('pause-overlay');
+  if (pauseOverlay) {
+    pauseOverlay.style.display = 'none';
+  }
 };
 
 const createGameOverBanner = () => {
-    const list = document.getElementById('list');
-    restartButton.innerText = "Restart";
-    restartButton.classList.add('button');
+  const list = document.getElementById('list');
+  restartButton.innerText = 'Restart';
+  restartButton.classList.add('button');
 
-    if (list) list.remove();
-    if (startButton) startButton.remove();
+  if (list) list.remove();
+  if (startButton) startButton.remove();
 
-    let title = document.getElementById("title") as HTMLElement;
-    let description = document.getElementById('description') as HTMLElement;
+  const title = document.getElementById('title') as HTMLElement;
+  const description = document.getElementById('description') as HTMLElement;
 
-    title.innerText = "GAME OVER";
-    description.innerText = `Score: ${userScore}`;
-    tutorialElement.appendChild(restartButton);
+  title.innerText = 'GAME OVER';
+  description.innerText = `Score: ${userScore}`;
+  tutorialElement.appendChild(restartButton);
 
-    tutorialElement.classList.remove('fadeOut');
+  tutorialElement.classList.remove('fadeOut');
 };
