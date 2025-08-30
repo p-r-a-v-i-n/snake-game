@@ -1,141 +1,141 @@
 html,
 body {
-    width: 100%;
-    height: 100%;
-    padding: 0;
-    margin: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 body {
-    background-color: #202020;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  background-color: #202020;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 div#score {
-    color: white;
+  color: white;
 }
 
 #container {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #game {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #tutorial {
-    position: absolute;
-    height: 600px;
-    width: 70%;
-    display: flex;
-    flex-direction: column;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  height: 600px;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 #score {
-    display: flex;
-    justify-content: space-between;
-    padding: 5px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }
 
 div#tutorial {
-    margin: 5%;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    background-color: #181818;
-    opacity: 0.1;
+  margin: 5%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  background-color: #181818;
+  opacity: 0.1;
 }
 
 div#tutorial:hover {
-    margin: 30px;
-    background-color: #222222;
-    opacity: 0.5;
-    transition: 1s;
+  margin: 30px;
+  background-color: #222222;
+  opacity: 0.5;
+  transition: 1s;
 }
 
-
 .button {
-    padding: 12px 28px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 10px;
-    color: #fff;
-    background: linear-gradient(135deg, #4CAF50, #2E7D32);
-    box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
+  padding: 12px 28px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  box-shadow: 0 4px 12px rgba(0, 255, 0, 0.3);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
 }
 
 .button:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 20px rgba(0, 255, 0, 0.6);
-    background: linear-gradient(135deg, #66BB6A, #388E3C);
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 255, 0, 0.6);
+  background: linear-gradient(135deg, #66bb6a, #388e3c);
 }
 
 .animated {
-    animation-duration: 1s;
-    animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-fill-mode: both;
 }
 
 @keyframes fadeOut {
-    0% {
-        opacity: 0.8;
-    }
+  0% {
+    opacity: 0.8;
+  }
 
-    100% {
-        opacity: 0;
-    }
+  100% {
+    opacity: 0;
+  }
 }
 
 .fadeOut {
-    animation-name: fadeOut;
+  animation-name: fadeOut;
 }
 
 #pause-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .pause-content {
-    text-align: center;
-    color: white;
-    background-color: #333;
-    padding: 40px;
-    border-radius: 10px;
-    border: 2px solid #555;
+  text-align: center;
+  color: white;
+  background-color: #333;
+  padding: 40px;
+  border-radius: 10px;
+  border: 2px solid #555;
 }
 
 .pause-content h2 {
-    margin: 0 0 20px 0;
-    font-size: 2em;
-    color: #fff;
+  margin: 0 0 20px 0;
+  font-size: 2em;
+  color: #fff;
 }
 
 .pause-content p {
-    margin: 0;
-    font-size: 1.2em;
-    color: #ccc;
+  margin: 0;
+  font-size: 1.2em;
+  color: #ccc;
 }
