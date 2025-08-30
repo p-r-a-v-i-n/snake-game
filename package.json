@@ -1,0 +1,46 @@
+{
+  "name": "snake-game",
+  "version": "1.0.0",
+  "description": "A classic Snake Game built with HTML, CSS, and JavaScript. Playable in the browser with clean, minimal design.",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serve .",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.34.0",
+    "eslint": "^9.34.0",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jiti": "^2.5.1",
+    "lint-staged": "^16.1.5",
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.41.0"
+  },
+  "lint-staged": {
+    "*.{js,css,html,md,json}": "prettier --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/p-r-a-v-i-n/snake-game.git"
+  },
+  "keywords": [
+    "snake-game",
+    "javascript-game",
+    "html5-canvas",
+    "retro-game",
+    "classic-snake"
+  ],
+  "author": "Pravin Kamble <your-email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/p-r-a-v-i-n/snake-game/issues"
+  },
+  "homepage": "https://github.com/p-r-a-v-i-n/snake-game#readme",
+  "engines": {
+    "node": ">=18"
+  }
+}
