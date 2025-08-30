@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "npx serve .",
+    "build": "npx tsc",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
