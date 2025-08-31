@@ -13,18 +13,25 @@ Thanks for your interest in contributing!
    ```bash
    git checkout -b your-feature-name
    ```
-3. Make changes, then test:
-   open index.html file in broswer.
-4. Commit and push:
+3. Install dependencies and run checks:
    ```bash
+   npm install
+   ```
+   If format:check reports any issues, fix them by running: `npm run format`
+4. Make changes, then test:
+   open index.html file in browser.
+5. Commit and push:
+   ```bash
+   npm run lint
+   npm run format:check
    git add .
    git commit -m "Your message"
    git push origin your-feature-branch-name
    ```
-5. Open Pull request on Github
+6. Open Pull request on Github
    - Go to your fork
    - Click Compare & pull request
-   - Add clear and description
+   - Add clear title and description
 
 ## Reporting Bugs
 
@@ -37,4 +44,4 @@ Open an issue with:
 
 Have a feature idea? Create an issue or discussion!
 
-Thanks again for helping improve Snake Game! 💚
+Thanks again for helping to improve Snake Game! 💚
